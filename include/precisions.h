@@ -1,3 +1,4 @@
+/*My modification is in line 38 from e-4 to e-0 or something*/
 #include "macros_precision.h"
 
 /*
@@ -22,6 +23,7 @@ class_type_parameter(background_evolver,int,enum evolver_type,ndf15)
  * (used by both evolvers)
  */
 class_precision_parameter(tol_background_integration,double,1.e-10)
+
 /**
  * Only relevant for rk evolver: the default integration step is given
  * by this number multiplied by the timescale defined in
@@ -34,7 +36,7 @@ class_precision_parameter(background_integration_stepsize,double,0.5)
  * such that the Omega of radiation at that point is close to 1 within tolerance.
  * (Class starts background integration during complete radiation domination)
  */
-class_precision_parameter(tol_initial_Omega_r,double,1.e-4)
+class_precision_parameter(tol_initial_Omega_r,double,1.e0)
 /**
  * Tolerance of relative deviation of the used non-cold dark matter mass compared to that which would give the correct density.
  * The dark matter mass is estimated from the dark matter density using a Newton-Method.

@@ -1384,6 +1384,12 @@ cdef class Class:
     def Omega_Lambda(self):
         return self.ba.Omega0_lambda
 
+    def Omega_Lambda2(self):     #ktcho_iypark 2024.09.24
+        return self.ba.Omega0_lambda2  
+
+    def Omega_Lambda3(self):     #ktcho_iypark 2024.09.24
+        return self.ba.Omega0_lambda3    
+
     def Omega_g(self):
         return self.ba.Omega0_g
 
@@ -2294,6 +2300,10 @@ cdef class Class:
                 value = self.ba.h*100
             elif name == 'Omega0_lambda' or name == 'Omega_Lambda':
                 value = self.ba.Omega0_lambda
+            elif name == 'Omega0_lambda2' or name == 'Omega_Lambda2':  #ktcho_iypark 2024.09.24
+                value = self.ba.Omega0_lambda2
+            elif name == 'Omega0_lambda3' or name == 'Omega_Lambda3':  #ktcho_iypark 2024.09.24
+                value = self.ba.Omega0_lambda3    
             elif name == 'Omega0_fld':
                 value = self.ba.Omega0_fld
             elif name == 'age':

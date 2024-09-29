@@ -45,6 +45,13 @@ derived = CDM.get_current_derived_parameters(['Omega0_lambda'])
 print (derived)
 print ("Omega_Lambda =",derived['Omega0_lambda'])
 
+derived = CDM.get_current_derived_parameters(['Omega0_lambda2'])  #ktcho_iypark 2024.09.24
+print (derived)
+print ("Omega_Lambda2 =",derived['Omega0_lambda2'])
+
+derived = CDM.get_current_derived_parameters(['Omega0_lambda3'])  #ktcho_iypark 2024.09.24
+print (derived)
+print ("Omega_Lambda3 =",derived['Omega0_lambda3'])
 
 # In[ ]:
 

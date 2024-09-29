@@ -1,3 +1,4 @@
+/*MYCORRECTION: Let us add \Omega_{\Lambda_2} term here (around line 539)*/
 /** @file background.c Documented background module
  *
  * * Julien Lesgourgues, 17.04.2011
@@ -535,6 +536,22 @@ int background_functions(
     rho_tot += pvecback[pba->index_bg_rho_lambda];
     p_tot -= pvecback[pba->index_bg_rho_lambda];
   }
+/*rho_tot += 0.00000017 * pow(pba->H0,2) / pow(a,4)-0.013 * pow(pba->H0,2) / pow(a,2);
+p_tot -=0.00000017 * pow(pba->H0,2) / pow(a,4)-0.013 * pow(pba->H0,2) / pow(a,2);*/
+  /* Lambda2 - ktcho_iypark 2024.06.20 (09.24); mslee 2024.09.19 */
+  if (pba->has_lambda2 == _TRUE_) {
+    pvecback[pba->index_bg_rho_lambda2] = pba->Omega0_lambda2 * pow(pba->H0,2)/ pow(a,4);
+    rho_tot += pvecback[pba->index_bg_rho_lambda2];
+    p_tot -= pvecback[pba->index_bg_rho_lambda2];
+  }
+
+  /* Lambda3 - ktcho_iypark 2024.06.20 (09.24); mslee 2024.09.19 */
+  if (pba->has_lambda3 == _TRUE_) {
+    pvecback[pba->index_bg_rho_lambda3] = pba->Omega0_lambda3 * pow(pba->H0,2)/ pow(a,2);
+    rho_tot += pvecback[pba->index_bg_rho_lambda3];
+    p_tot -= pvecback[pba->index_bg_rho_lambda3];
+  }
+
 
   /* fluid with w(a) and constant cs2 */
   if (pba->has_fld == _TRUE_) {
@@ -978,6 +995,8 @@ int background_indices(
   pba->has_dr = _FALSE_;
   pba->has_scf = _FALSE_;
   pba->has_lambda = _FALSE_;
+  pba->has_lambda2 = _FALSE_;    // ktcho_iypark 2024.09.24
+  pba->has_lambda3 = _FALSE_;    // ktcho_iypark 2024.09.24
   pba->has_fld = _FALSE_;
   pba->has_ur = _FALSE_;
   pba->has_idr = _FALSE_;
@@ -1001,6 +1020,17 @@ int background_indices(
 
   if (pba->Omega0_scf != 0.)
     pba->has_scf = _TRUE_;
+
+  // lambda2 - ktcho_iypark 2024.09.24
+  if (pba->Omega0_lambda2 != 0.)
+  {
+    pba->has_lambda2 = _TRUE_;
+  }
+
+  // lambda3 - ktcho_iypark 2024.09.24
+  if (pba->Omega0_lambda3 != 0.)
+    pba->has_lambda3 = _TRUE_;
+
 
   if (pba->Omega0_lambda != 0.)
     pba->has_lambda = _TRUE_;
@@ -1071,6 +1101,12 @@ int background_indices(
 
   /* - index for Lambda */
   class_define_index(pba->index_bg_rho_lambda,pba->has_lambda,index_bg,1);
+
+ /* - index for Lambda2 */    // set index for OL2 - ktcho_iypark 2024.09.24
+  class_define_index(pba->index_bg_rho_lambda2,pba->has_lambda2,index_bg,1);
+
+  /* - index for Lambda3 */    // set index for OL3 - ktcho_iypark 2024.09.24
+  class_define_index(pba->index_bg_rho_lambda3,pba->has_lambda3,index_bg,1);
 
   /* - index for fluid */
   class_define_index(pba->index_bg_rho_fld,pba->has_fld,index_bg,1);
@@ -2077,6 +2113,19 @@ int background_solve(
         printf("     -> Omega_Lambda = %g, wished %g\n",
                pba->background_table[(pba->bt_size-1)*pba->bg_size+pba->index_bg_rho_lambda]/pba->background_table[(pba->bt_size-1)*pba->bg_size+pba->index_bg_rho_crit], pba->Omega0_lambda);
       }
+
+      // lambda2 - ktcho_iypark 2024.09.24
+      if (pba->has_lambda2 == _TRUE_) {
+        printf("     -> Omega_Lambda2 = %g, wished %g\n",
+               pba->background_table[(pba->bt_size-1)*pba->bg_size+pba->index_bg_rho_lambda2]/pba->background_table[(pba->bt_size-1)*pba->bg_size+pba->index_bg_rho_crit], pba->Omega0_lambda2);
+      }
+
+      // lambda3 - ktcho_iypark 2024.09.24
+      if (pba->has_lambda3 == _TRUE_) {
+        printf("     -> Omega_Lambda3 = %g, wished %g\n",
+               pba->background_table[(pba->bt_size-1)*pba->bg_size+pba->index_bg_rho_lambda3]/pba->background_table[(pba->bt_size-1)*pba->bg_size+pba->index_bg_rho_crit], pba->Omega0_lambda3);
+      }
+
       printf("     -> parameters: [lambda, alpha, A, B] = \n");
       printf("                    [");
       for (index_scf=0; index_scf<pba->scf_parameters_size-1; index_scf++) {
@@ -2447,6 +2496,8 @@ int background_output_titles(
     }
   }
   class_store_columntitle(titles,"(.)rho_lambda",pba->has_lambda);
+  class_store_columntitle(titles,"(.)rho_lambda2",pba->has_lambda2);    // ktcho_iypark 2024.09.24
+  class_store_columntitle(titles,"(.)rho_lambda3",pba->has_lambda3);    // ktcho_iypark 2024.09.24
   class_store_columntitle(titles,"(.)rho_fld",pba->has_fld);
   class_store_columntitle(titles,"(.)w_fld",pba->has_fld);
   class_store_columntitle(titles,"(.)rho_ur",pba->has_ur);
@@ -2520,6 +2571,8 @@ int background_output_data(
       }
     }
     class_store_double(dataptr,pvecback[pba->index_bg_rho_lambda],pba->has_lambda,storeidx);
+    class_store_double(dataptr,pvecback[pba->index_bg_rho_lambda2],pba->has_lambda2,storeidx);   // ktcho_iypark 2024.09.24
+    class_store_double(dataptr,pvecback[pba->index_bg_rho_lambda3],pba->has_lambda3,storeidx);   // ktcho_iypark 2024.09.24
     class_store_double(dataptr,pvecback[pba->index_bg_rho_fld],pba->has_fld,storeidx);
     class_store_double(dataptr,pvecback[pba->index_bg_w_fld],pba->has_fld,storeidx);
     class_store_double(dataptr,pvecback[pba->index_bg_rho_ur],pba->has_ur,storeidx);
@@ -2842,6 +2895,18 @@ int background_output_budget(
       class_print_species("Cosmological Constant",lambda);
       budget_other+=pba->Omega0_lambda;
     }
+
+    // lambda2 - ktcho_iypark 2024.09.24
+    if (pba->has_lambda2 == _TRUE_) {
+      class_print_species("T^4 dependent vacuum energy", lambda2);
+      budget_other+=pba->Omega0_lambda2;
+    }
+    // lambda3 - ktcho_iypark 2024.09.24
+    if (pba->has_lambda3 == _TRUE_) {
+      class_print_species("T^2 dependent vacuum energy", lambda3);
+      budget_other+=pba->Omega0_lambda3;
+    }
+
     if (pba->has_fld == _TRUE_) {
       class_print_species("Dark Energy Fluid",fld);
       budget_other+=pba->Omega0_fld;

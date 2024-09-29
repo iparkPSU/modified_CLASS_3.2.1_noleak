@@ -1,3 +1,4 @@
+/*My modification is around line 5816*/
 /** @file input.c Documented input module.
  *
  * Julien Lesgourgues, 27.08.2010
@@ -2339,6 +2340,10 @@ int input_read_parameters_species(struct file_content * pfc,
   /** - Define local variables */
   int flag1, flag2, flag3;
   double param1, param2, param3;
+  int flag4;                             // lambda2 - ktcho_iypark 2024.09.24
+  double param4;                        // lambda2 - ktcho_iypark 2024.09.24
+  int flag5;                            // lambda3 - ktcho_iypark 2024.09.24
+  double param5;                        // lambda3 - ktcho_iypark 2024.09.24
   char string1[_ARGUMENT_LENGTH_MAX_];
   int fileentries;
   int N_ncdm=0, n, entries_read;
@@ -3174,6 +3179,14 @@ int input_read_parameters_species(struct file_content * pfc,
   class_call(parser_read_double(pfc,"Omega_Lambda",&param1,&flag1,errmsg),
              errmsg,
              errmsg);
+  // lambda2 - ktcho__mslee_iypark 2024.09.24
+  class_call(parser_read_double(pfc, "Omega_Lambda2", &param4, &flag4, errmsg),
+             errmsg,
+             errmsg);
+  // lambda3 - ktcho__mslee_iypark 2024.09.24
+  class_call(parser_read_double(pfc, "Omega_Lambda3", &param5, &flag5, errmsg),
+             errmsg,
+             errmsg);               
   class_call(parser_read_double(pfc,"Omega_fld",&param2,&flag2,errmsg),
              errmsg,
              errmsg);
@@ -3206,10 +3219,21 @@ int input_read_parameters_species(struct file_content * pfc,
   Omega_tot += pba->Omega0_dcdmdr;
   Omega_tot += pba->Omega0_idr;
   Omega_tot += pba->Omega0_ncdm_tot;
+  /*Omega_tot += 0.00000017-0.013;*/
   /* Step 1 */
   if (flag1 == _TRUE_){
     pba->Omega0_lambda = param1;
     Omega_tot += pba->Omega0_lambda;
+  }
+  // lambda2 - ktcho_iypark - updated with flag4 and param4, 2024.09.24
+  if (flag4 == _TRUE_){
+    pba->Omega0_lambda2 = param4;
+    Omega_tot += pba->Omega0_lambda2;
+  }
+  // lambda2 - ktcho_iypark - updated with flag4 and param4, 2024.09.24
+  if (flag4 == _TRUE_){
+    pba->Omega0_lambda3 = param5;
+    Omega_tot += pba->Omega0_lambda3;
   }
   if (flag2 == _TRUE_){
     pba->Omega0_fld = param2;
@@ -5812,7 +5836,14 @@ int input_default_params(struct background *pba,
   /** 9) Dark energy contributions */
   pba->Omega0_fld = 0.;
   pba->Omega0_scf = 0.;
+  /*pba->Omega0_lambda = 1.-0.00000017+0.013-pba->Omega0_k-pba->Omega0_g-pba->Omega0_ur-pba->Omega0_b-pba->Omega0_cdm-pba->Omega0_ncdm_tot-pba->Omega0_dcdmdr - pba->Omega0_idr -pba->Omega0_idm;*/
   pba->Omega0_lambda = 1.-pba->Omega0_k-pba->Omega0_g-pba->Omega0_ur-pba->Omega0_b-pba->Omega0_cdm-pba->Omega0_ncdm_tot-pba->Omega0_dcdmdr - pba->Omega0_idr -pba->Omega0_idm;
+  // lambda2 - ktcho_iypark 2024.09.24
+  pba->Omega0_lambda -= pba->Omega0_lambda2;  
+  // lambda3 - ktcho_iypark 2024.09.24
+  pba->Omega0_lambda -= pba->Omega0_lambda3;  
+
+
   /** 8.a) Omega fluid */
   /** 8.a.1) PPF approximation */
   pba->use_ppf = _TRUE_;
