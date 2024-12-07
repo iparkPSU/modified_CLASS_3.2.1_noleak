@@ -3179,11 +3179,11 @@ int input_read_parameters_species(struct file_content * pfc,
   class_call(parser_read_double(pfc,"Omega_Lambda",&param1,&flag1,errmsg),
              errmsg,
              errmsg);
-  // lambda2 - ktcho__mslee_iypark 2024.09.24
+  // lambda2 - mslee_iypark 2024.09.24
   class_call(parser_read_double(pfc, "Omega_Lambda2", &param4, &flag4, errmsg),
              errmsg,
              errmsg);
-  // lambda3 - ktcho__mslee_iypark 2024.09.24
+  // lambda3 - mslee_iypark 2024.09.24
   class_call(parser_read_double(pfc, "Omega_Lambda3", &param5, &flag5, errmsg),
              errmsg,
              errmsg);               
