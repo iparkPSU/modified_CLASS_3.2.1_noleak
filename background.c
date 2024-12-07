@@ -538,14 +538,14 @@ int background_functions(
   }
 /*rho_tot += 0.00000017 * pow(pba->H0,2) / pow(a,4)-0.013 * pow(pba->H0,2) / pow(a,2);
 p_tot -=0.00000017 * pow(pba->H0,2) / pow(a,4)-0.013 * pow(pba->H0,2) / pow(a,2);*/
-  /* Lambda2 - ktcho_iypark 2024.06.20 (09.24); mslee 2024.09.19 */
+  /* Lambda2 - mslee-iypark 2024.09.19 */
   if (pba->has_lambda2 == _TRUE_) {
     pvecback[pba->index_bg_rho_lambda2] = pba->Omega0_lambda2 * pow(pba->H0,2)/ pow(a,4);
     rho_tot += pvecback[pba->index_bg_rho_lambda2];
     p_tot -= pvecback[pba->index_bg_rho_lambda2];
   }
 
-  /* Lambda3 - ktcho_iypark 2024.06.20 (09.24); mslee 2024.09.19 */
+  /* Lambda3 - mslee-iypark 2024.09.19 */
   if (pba->has_lambda3 == _TRUE_) {
     pvecback[pba->index_bg_rho_lambda3] = pba->Omega0_lambda3 * pow(pba->H0,2)/ pow(a,2);
     rho_tot += pvecback[pba->index_bg_rho_lambda3];
