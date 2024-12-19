@@ -36,6 +36,7 @@ class_precision_parameter(background_integration_stepsize,double,0.5)
  * such that the Omega of radiation at that point is close to 1 within tolerance.
  * (Class starts background integration during complete radiation domination)
  */
+ /* e0:iypark 2024.09.19 */
 class_precision_parameter(tol_initial_Omega_r,double,1.e0)
 /**
  * Tolerance of relative deviation of the used non-cold dark matter mass compared to that which would give the correct density.
