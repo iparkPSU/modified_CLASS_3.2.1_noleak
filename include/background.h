@@ -172,8 +172,8 @@ struct background
   int index_bg_rho_cdm;       /**< cdm density */
   int index_bg_rho_idm;       /**< idm density */
   int index_bg_rho_lambda;    /**< cosmological constant density */
-  int index_bg_rho_lambda2;   /*ktcho_iyp 2024.09.24*/ 
-  int index_bg_rho_lambda3;   /*ktcho_iyp 2024.09.24*/ 
+  int index_bg_rho_lambda2;   /*ktcho_iypark 2024.09.24*/ 
+  int index_bg_rho_lambda3;   /*ktcho_iypark 2024.09.24*/ 
   int index_bg_rho_fld;       /**< fluid density */
   int index_bg_w_fld;         /**< fluid equation of state */
   int index_bg_rho_idr;       /**< density of interacting dark radiation */
@@ -294,8 +294,8 @@ struct background
   short has_scf;       /**< presence of a scalar field? */
   short has_ncdm;      /**< presence of non-cold dark matter? */
   short has_lambda;    /**< presence of cosmological constant? */
-  short has_lambda2;   /*ktcho_iyp 2024.09.24*/ 
-  short has_lambda3;   /*ktcho_iyp 2024.09.24*/ 
+  short has_lambda2;   /*ktcho_iypark 2024.09.24*/ 
+  short has_lambda3;   /*ktcho_iypark 2024.09.24*/ 
   short has_fld;       /**< presence of fluid with constant w and cs2? */
   short has_ur;        /**< presence of ultra-relativistic neutrinos/relics? */
   short has_idr;       /**< presence of interacting dark radiation? */
